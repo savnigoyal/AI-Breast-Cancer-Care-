@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Breast Cancer Care</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <div class="header-text">
+    <h1>AI Breast Cancer Care</h1>
+    <p>Detection • Classification • Recurrence Prediction</p>
+  </div>
+</header>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* Chatbot Button */
+#chatBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #ff4f8b;
+  color: white;
+  border: none;
+  padding: 18px 22px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Chatbot Box */
+#chatbot {
+  display: none;
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 420px;
+  height: 520px;
+  background: #ffe4ee;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+#chatHeader {
+  background: #ff4f8b;
+  color: white;
+  padding: 18px;
+  font-size: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  text-align: center;
+}
+
+/* Chat Area */
+#chatlog {
+  height: 360px;
+  padding: 15px;
+  overflow-y: auto;
+  background: #fff0f6;
+}
+
+/* Messages */
+.user {
+  background: #ff4f8b;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 14px;
+  margin: 8px 0;
+  width: fit-content;
+  max-width: 80%;
+}
+
+.bot {
+  background: white;
+  color: #333;
+  padding: 10px 14px;
+  border-radius: 14px;
+  margin: 8px 0;
+  width: fit-content;
+  max-width: 80%;
+}
+
+/* Input Area */
+#inputArea {
+  display: flex;
+  padding: 12px;
+  background: #ffe4ee;
+}
+
+#userInput {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+}
+
+#sendBtn {
+  margin-left: 10px;
+  background: #ff4f8b;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Chat Button -->
+<button id="chatBtn" onclick="toggleChat()">💬</button>
+
+<!-- Chatbot -->
+<div id="chatbot">
+<div id="sparkles"></div>
+
+  <div id="chatHeader">Breast Cancer Chatbot 💗</div>
+  <div id="chatlog"></div>
+
+  <div id="inputArea">
+    <input id="userInput" placeholder="Ask about breast cancer..." />
+    <button id="sendBtn" onclick="send()">Send</button>
+  </div>
+</div>
+
+<script>
+function toggleChat() {
+  let chat = document.getElementById("chatbot");
+  chat.style.display = chat.style.display === "none" ? "block" : "none";
+}
+
+async function send() {
+  let input = document.getElementById("userInput");
+  let msg = input.value;
+  if (!msg) return;
+
+  let chatlog = document.getElementById("chatlog");
+
+  let userMsg = document.createElement("div");
+  userMsg.className = "user";
+  userMsg.innerText = msg;
+  chatlog.appendChild(userMsg);
+
+  let res = await fetch("http://localhost:8080/chat");
+  let data = await res.json();
+
+  let botMsg = document.createElement("div");
+  botMsg.className = "bot";
+  botMsg.innerText = data.reply;
+  chatlog.appendChild(botMsg);
+
+  chatlog.scrollTop = chatlog.scrollHeight;
+  input.value = "";
+}
+function createSparkle() {
+  const sparkle = document.createElement("div");
+  sparkle.className = "sparkle";
+
+  const chatbot = document.getElementById("chatbot");
+  const sparkles = document.getElementById("sparkles");
+
+  sparkle.style.left = Math.random() * chatbot.offsetWidth + "px";
+  sparkle.style.top  = Math.random() * chatbot.offsetHeight + "px";
+
+  sparkles.appendChild(sparkle);
+
+  setTimeout(() => sparkle.remove(), 2000);
+}
+
+setInterval(() => {
+  const chatbot = document.getElementById("chatbot");
+  if (chatbot.style.display === "block") {
+    createSparkle();
+  }
+}, 300);
+
+</script>
+
+</body>
+</html>
+
+
+<nav>
+  <a href="#features">Our Features</a>
+  <a href="#info">Know More</a>
+  <a href="#predict">Predict</a>
+  <a href="#stories">Survivor Stories</a>
+</nav>
+
+<section class="hero">
+  <h2>Your Health. Our Intelligence.</h2>
+  <button onclick="toggleInfo()">Know More About Breast Cancer</button>
+</section>
+
+<section id="info" class="card hidden small-info">
+
+<h2>Know More About Breast Cancer</h2>
+
+<h3>Overview</h3>
+<p>
+Breast cancer is a disease in which abnormal cells in the breast grow uncontrollably and form a malignant tumor.
+These cells can invade nearby tissues and spread through the lymphatic system and bloodstream to distant organs.
+Although it mainly affects women, men can also develop breast cancer.
+Early detection greatly increases survival and treatment success.
+</p>
+
+<h3>Breast Anatomy</h3>
+<p>
+The breast consists of lobules that produce milk, ducts that carry milk to the nipple, fatty tissue that gives shape,
+connective tissue that provides support, and lymph nodes that fight infection.
+Most cancers start in the ducts or lobules and may spread to lymph nodes and vital organs.
+</p>
+
+<h3>Types of Breast Cancer</h3>
+<p>
+<b>DCIS</b> is a non-invasive form confined to milk ducts.  
+<b>IDC</b> spreads beyond ducts into nearby tissue.  
+<b>ILC</b> begins in lobules and spreads silently.  
+<b>TNBC</b> lacks hormone receptors and is aggressive.  
+<b>HER2-positive</b> cancer grows fast but responds to targeted therapy.  
+<b>Inflammatory breast cancer</b> is rare, fast-growing, and causes swelling and redness.
+</p>
+
+<h3>Causes and Risk Factors</h3>
+<p>
+Breast cancer develops due to genetic, hormonal, and lifestyle factors.
+BRCA1 and BRCA2 gene mutations increase risk.
+Early menstruation, late menopause, hormone therapy, smoking, alcohol, obesity,
+poor diet, and lack of exercise also contribute.
+</p>
+
+<h3>Signs and Symptoms</h3>
+<p>
+A lump in the breast or underarm, changes in breast size or shape,
+skin dimpling, nipple discharge, breast pain, redness, or swelling.
+Early stages may have no symptoms, making screening essential.
+</p>
+
+<h3>Stages of Breast Cancer</h3>
+<p>
+Stage 0 is non-invasive.  
+Stage I is localized.  
+Stage II involves nearby lymph nodes.  
+Stage III spreads to surrounding tissues or multiple nodes.  
+Stage IV spreads to distant organs like lungs, liver, or bones.
+</p>
+
+<h3>Diagnosis</h3>
+<p>
+Diagnosis includes self-exams, clinical exams, mammograms, ultrasound,
+biopsy, and MRI to determine cancer type and stage.
+</p>
+
+<h3>Treatment Options</h3>
+<p>
+Treatment may include surgery, radiation therapy, chemotherapy,
+hormone therapy, targeted therapy, and immunotherapy depending on the case.
+</p>
+
+<h3>Prevention and Early Detection</h3>
+<p>
+Healthy lifestyle choices, avoiding tobacco and alcohol, maintaining weight,
+regular exercise, breastfeeding, and routine screening reduce risk.
+</p>
+
+<h3>Emotional and Social Impact</h3>
+<p>
+Breast cancer affects mental and emotional health.
+Support from family, friends, counselors, and survivor groups is essential.
+</p>
+
+<h3>Awareness and Hope</h3>
+<p>
+The pink ribbon represents hope.
+With early detection and modern treatments, many people live long, fulfilling lives.
+</p>
+
+</section>
+
+<section id="features" class="card">
+<h2>Our Features</h2>
+<div class="grid">
+<div class="box"><h3>Detection</h3><p>AI cancer detection</p></div>
+<div class="box"><h3>Classification</h3><p>Cancer type detection</p></div>
+<div class="box"><h3>Recurrence</h3><p>Recurrence prediction</p></div>
+</div>
+</section>
+
+<section id="predict" class="card">
+<h2>Upload Report</h2>
+<input type="file">
+<br><br>
+<button>Generate Result</button>
+</section>
+
+<section id="stories" class="card">
+<h2>Survivor Stories</h2>
+<p class="story-intro">Hope, courage and strength</p>
+<div class="story-grid">
+<div class="story-box"><h3>Anita</h3><p>Early detection saved my life.</p></div>
+<div class="story-box"><h3>Meera</h3><p>Hope kept me going.</p></div>
+<div class="story-box"><h3>Radhika</h3><p>Never give up.</p></div>
+</div>
+</section>
+
+<footer>
+<p>Developed by Savni Goyal | B.Tech CSE</p>
+</footer>
+
+<script>
+function toggleInfo(){
+document.getElementById("info").classList.toggle("hidden");
+}
+</script>
+
+</body>
+</html>
+
+
