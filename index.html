@@ -1,330 +1,684 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>AI Breast Cancer Care</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Breast Cancer Care</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <div class="header-text">
-    <h1>AI Breast Cancer Care</h1>
-    <p>Detection • Classification • Recurrence Prediction</p>
+  <header>
+    <div class="header-text">
+      <h1>AI Breast Cancer Care</h1>
+      <p>Detection • Classification • Recurrence Prediction</p>
+    </div>
+  </header>
+  <!DOCTYPE html>
+  <html>
+
+  <head>
+    <style>
+      /* Chatbot Button */
+      #chatBtn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: #ff4f8b;
+        color: white;
+        border: none;
+        padding: 18px 22px;
+        border-radius: 50%;
+        font-size: 22px;
+        cursor: pointer;
+      }
+
+      /* Chatbot Box */
+      #chatbot {
+        display: none;
+        position: fixed;
+        bottom: 100px;
+        right: 30px;
+        width: 420px;
+        height: 520px;
+        background: #ffe4ee;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        font-family: Arial, sans-serif;
+      }
+
+      /* Header */
+      #chatHeader {
+        background: #ff4f8b;
+        color: white;
+        padding: 18px;
+        font-size: 20px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        text-align: center;
+      }
+
+      /* Chat Area */
+      #chatlog {
+        height: 360px;
+        padding: 15px;
+        overflow-y: auto;
+        background: #fff0f6;
+      }
+
+      /* Messages */
+      .user {
+        background: #ff4f8b;
+        color: white;
+        padding: 10px 14px;
+        border-radius: 14px;
+        margin: 8px 0;
+        width: fit-content;
+        max-width: 80%;
+      }
+
+      .bot {
+        background: white;
+        color: #333;
+        padding: 10px 14px;
+        border-radius: 14px;
+        margin: 8px 0;
+        width: fit-content;
+        max-width: 80%;
+      }
+
+      /* Input Area */
+      #inputArea {
+        display: flex;
+        padding: 12px;
+        background: #ffe4ee;
+      }
+
+      #userInput {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        font-size: 16px;
+      }
+
+      #sendBtn {
+        margin-left: 10px;
+        background: #ff4f8b;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- Chat Button -->
+    <button id="chatBtn" onclick="toggleChat()">💬</button>
+
+    <!-- Chatbot -->
+    <div id="chatbot">
+      <div id="sparkles"></div>
+
+      <div id="chatHeader">Breast Cancer Chatbot 💗</div>
+      <div id="chatlog"></div>
+
+      <div id="inputArea">
+        <input id="userInput" placeholder="Ask about breast cancer..." />
+        <button id="sendBtn" onclick="send()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      function toggleChat() {
+        let chat = document.getElementById("chatbot");
+        chat.style.display = chat.style.display === "none" ? "block" : "none";
+      }
+
+      async function send() {
+        let input = document.getElementById("userInput");
+        let msg = input.value;
+        if (!msg) return;
+
+        let chatlog = document.getElementById("chatlog");
+
+        let userMsg = document.createElement("div");
+        userMsg.className = "user";
+        userMsg.innerText = msg;
+        chatlog.appendChild(userMsg);
+
+        let res = await fetch("http://localhost:8080/chat");
+        let data = await res.json();
+
+        let botMsg = document.createElement("div");
+        botMsg.className = "bot";
+        botMsg.innerText = data.reply;
+        chatlog.appendChild(botMsg);
+
+        chatlog.scrollTop = chatlog.scrollHeight;
+        input.value = "";
+      }
+      function createSparkle() {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+
+        const chatbot = document.getElementById("chatbot");
+        const sparkles = document.getElementById("sparkles");
+
+        sparkle.style.left = Math.random() * chatbot.offsetWidth + "px";
+        sparkle.style.top = Math.random() * chatbot.offsetHeight + "px";
+
+        sparkles.appendChild(sparkle);
+
+        setTimeout(() => sparkle.remove(), 2000);
+      }
+
+      setInterval(() => {
+        const chatbot = document.getElementById("chatbot");
+        if (chatbot.style.display === "block") {
+          createSparkle();
+        }
+      }, 300);
+
+    </script>
+
+  </body>
+
+  </html>
+
+
+  <nav>
+    <a href="#features">Our Features</a>
+    <a href="#info">Know More</a>
+    <a href="#predict">Predict</a>
+    <a href="#stories">Survivor Stories</a>
+  </nav>
+
+  <section class="hero">
+    <h2>Your Health. Our Intelligence.</h2>
+    <button onclick="toggleInfo()">Know More About Breast Cancer</button>
+  </section>
+
+  <section id="info" class="card hidden small-info">
+
+    <h2>Know More About Breast Cancer</h2>
+
+    <h3>Overview</h3>
+    <p>
+      Breast cancer is a disease in which abnormal cells in the breast grow uncontrollably and form a malignant tumor.
+      These cells can invade nearby tissues and spread through the lymphatic system and bloodstream to distant organs.
+      Although it mainly affects women, men can also develop breast cancer.
+      Early detection greatly increases survival and treatment success.
+    </p>
+
+    <h3>Breast Anatomy</h3>
+    <p>
+      The breast consists of lobules that produce milk, ducts that carry milk to the nipple, fatty tissue that gives
+      shape,
+      connective tissue that provides support, and lymph nodes that fight infection.
+      Most cancers start in the ducts or lobules and may spread to lymph nodes and vital organs.
+    </p>
+
+    <h3>Types of Breast Cancer</h3>
+    <p>
+      <b>DCIS</b> is a non-invasive form confined to milk ducts.
+      <b>IDC</b> spreads beyond ducts into nearby tissue.
+      <b>ILC</b> begins in lobules and spreads silently.
+      <b>TNBC</b> lacks hormone receptors and is aggressive.
+      <b>HER2-positive</b> cancer grows fast but responds to targeted therapy.
+      <b>Inflammatory breast cancer</b> is rare, fast-growing, and causes swelling and redness.
+    </p>
+
+    <h3>Causes and Risk Factors</h3>
+    <p>
+      Breast cancer develops due to genetic, hormonal, and lifestyle factors.
+      BRCA1 and BRCA2 gene mutations increase risk.
+      Early menstruation, late menopause, hormone therapy, smoking, alcohol, obesity,
+      poor diet, and lack of exercise also contribute.
+    </p>
+
+    <h3>Signs and Symptoms</h3>
+    <p>
+      A lump in the breast or underarm, changes in breast size or shape,
+      skin dimpling, nipple discharge, breast pain, redness, or swelling.
+      Early stages may have no symptoms, making screening essential.
+    </p>
+
+    <h3>Stages of Breast Cancer</h3>
+    <p>
+      Stage 0 is non-invasive.
+      Stage I is localized.
+      Stage II involves nearby lymph nodes.
+      Stage III spreads to surrounding tissues or multiple nodes.
+      Stage IV spreads to distant organs like lungs, liver, or bones.
+    </p>
+
+    <h3>Diagnosis</h3>
+    <p>
+      Diagnosis includes self-exams, clinical exams, mammograms, ultrasound,
+      biopsy, and MRI to determine cancer type and stage.
+    </p>
+
+    <h3>Treatment Options</h3>
+    <p>
+      Treatment may include surgery, radiation therapy, chemotherapy,
+      hormone therapy, targeted therapy, and immunotherapy depending on the case.
+    </p>
+
+    <h3>Prevention and Early Detection</h3>
+    <p>
+      Healthy lifestyle choices, avoiding tobacco and alcohol, maintaining weight,
+      regular exercise, breastfeeding, and routine screening reduce risk.
+    </p>
+
+    <h3>Emotional and Social Impact</h3>
+    <p>
+      Breast cancer affects mental and emotional health.
+      Support from family, friends, counselors, and survivor groups is essential.
+    </p>
+
+    <h3>Awareness and Hope</h3>
+    <p>
+      The pink ribbon represents hope.
+      With early detection and modern treatments, many people live long, fulfilling lives.
+    </p>
+
+  </section>
+
+  <section id="features" class="card">
+    <h2>Our Features</h2>
+    <div class="grid">
+      <div class="box">
+        <h3>Detection</h3>
+        <p>AI cancer detection</p>
+      </div>
+      <div class="box">
+        <h3>Classification</h3>
+        <p>Cancer type detection</p>
+      </div>
+      <div class="box">
+        <h3>Recurrence</h3>
+        <p>Recurrence prediction</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="predict" class="card">
+    <h2><i class="fas fa-robot"></i> AI Risk Analysis</h2>
+    <p style="text-align: center; margin-bottom: 30px; color: #666;">
+      Upload <b>CC</b> (Cranio-Caudal) and <b>MLO</b> (Medio-Lateral Oblique) mammogram views for comprehensive
+      analysis.
+    </p>
+
+    <div class="upload-container">
+      <!-- CC Input -->
+      <div class="upload-box">
+        <label class="upload-label"><i class="fas fa-file-medical-alt"></i> CC View</label>
+        <label for="ccInput" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choose Image</label>
+        <input type="file" id="ccInput" class="custom-file-input" accept="image/*"
+          onchange="previewImage(this, 'ccPreview', 'ccOverlay')">
+
+        <div class="preview-container">
+          <span style="color: #aaa; font-size: 0.9rem;" id="ccPlaceholder">No image selected</span>
+          <img id="ccPreview" class="preview-img">
+          <div id="ccOverlay"
+            style="position: absolute; border: 4px solid #ff4f8b; box-shadow: 0 0 10px rgba(255, 79, 139, 0.5); display: none; pointer-events: none;">
+          </div>
+        </div>
+      </div>
+
+      <!-- MLO Input -->
+      <div class="upload-box">
+        <label class="upload-label"><i class="fas fa-file-medical-alt"></i> MLO View</label>
+        <label for="mloInput" class="file-upload-btn"><i class="fas fa-cloud-upload-alt"></i> Choose Image</label>
+        <input type="file" id="mloInput" class="custom-file-input" accept="image/*"
+          onchange="previewImage(this, 'mloPreview', 'mloOverlay')">
+
+        <div class="preview-container">
+          <span style="color: #aaa; font-size: 0.9rem;" id="mloPlaceholder">No image selected</span>
+          <img id="mloPreview" class="preview-img">
+          <div id="mloOverlay"
+            style="position: absolute; border: 4px solid #ff4f8b; box-shadow: 0 0 15px rgba(255, 79, 139, 0.8); display: none; pointer-events: none;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button onclick="analyzeImages()" class="analyze-btn"><i class="fas fa-microchip"></i> Analyze Risk</button>
+
+    <div id="loading" style="display: none; text-align: center; margin-top: 30px;">
+      <i class="fas fa-spinner fa-spin" style="font-size: 40px; color: var(--primary-color);"></i>
+      <p style="color: var(--primary-color); margin-top: 10px; font-weight: 500;">Analyzing mammograms... please wait...
+      </p>
+    </div>
+
+    <div id="result" style="display: none;">
+      <h3 style="color: var(--primary-dark); margin-top: 0; text-align: center;"><i class="fas fa-clipboard-check"></i>
+        Analysis Report</h3>
+      <div style="text-align: center; margin-top: 20px;">
+        <p style="font-size: 1.4em;">Cancer Probability: <strong id="probScore"
+            style="color: var(--primary-dark); font-size: 1.8em;">--</strong><span
+            style="font-size: 1.2em; color: var(--primary-dark);">%</span></p>
+        <p id="riskLevel"
+          style="font-weight: 700; font-size: 1.2em; margin: 10px 0; padding: 10px; border-radius: 8px; display: inline-block;">
+        </p>
+        <p style="font-size: 0.95em; color: #777; margin-top: 20px; font-style: italic;">
+          <i class="fas fa-exclamation-triangle"></i> Note: This result is generated by an AI model and is for
+          educational/screening assistance only. It does NOT replace a professional medical diagnosis. Please consult a
+          doctor.
+        </p>
+      </div>
+
+      <!-- Demo Video Container -->
+      <div id="demoVideoContainer" style="display: none; text-align: center; margin-top: 20px;">
+        <p style="color: #ef6c00; font-weight: bold; margin-bottom: 10px;">Backend Unavailable - Showing Demo Analysis
+        </p>
+        <video id="demoVideo" width="100%" controls
+          style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+          <source src="demo_analysis.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <section id="stories" class="card">
+    <h2>Survivor Stories</h2>
+    <p class="story-intro">Hope, courage and strength</p>
+    <div class="story-grid">
+      <div class="story-box">
+        <h3>Anita</h3>
+        <p>Early detection saved my life.</p>
+      </div>
+      <div class="story-box">
+        <h3>Meera</h3>
+        <p>Hope kept me going.</p>
+      </div>
+      <div class="story-box">
+        <h3>Radhika</h3>
+        <p>Never give up.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Developed by Savni Goyal | B.Tech CSE</p>
+  </footer>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" onclick="closeLightbox()"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 2000;">
+    <span
+      style="position: absolute; top: 20px; right: 30px; font-size: 40px; color: white; cursor: pointer;">&times;</span>
+    <div style="position: relative; max-width: 90%; max-height: 90%;">
+      <img id="lightboxImg"
+        style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 0 20px rgba(255,255,255,0.2);">
+      <div id="lightboxOverlay"
+        style="position: absolute; border: 4px solid #ff4f8b; box-shadow: 0 0 20px rgba(255, 79, 139, 1); display: none; pointer-events: none;">
+      </div>
+    </div>
   </div>
-</header>
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-/* Chatbot Button */
-#chatBtn {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background: #ff4f8b;
-  color: white;
-  border: none;
-  padding: 18px 22px;
-  border-radius: 50%;
-  font-size: 22px;
-  cursor: pointer;
-}
 
-/* Chatbot Box */
-#chatbot {
-  display: none;
-  position: fixed;
-  bottom: 100px;
-  right: 30px;
-  width: 420px;
-  height: 520px;
-  background: #ffe4ee;
-  border-radius: 20px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-  font-family: Arial, sans-serif;
-}
+  <script>
+    function toggleInfo() {
+      document.getElementById("info").classList.toggle("hidden");
+    }
 
-/* Header */
-#chatHeader {
-  background: #ff4f8b;
-  color: white;
-  padding: 18px;
-  font-size: 20px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  text-align: center;
-}
+    // Image Preview Logic
+    function previewImage(input, imgId, overlayId) {
+      const file = input.files[0];
+      const placeholderId = imgId.replace('Preview', 'Placeholder');
+      const placeholder = document.getElementById(placeholderId);
 
-/* Chat Area */
-#chatlog {
-  height: 360px;
-  padding: 15px;
-  overflow-y: auto;
-  background: #fff0f6;
-}
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.getElementById(imgId);
+          img.src = e.target.result;
+          img.style.display = 'block';
 
-/* Messages */
-.user {
-  background: #ff4f8b;
-  color: white;
-  padding: 10px 14px;
-  border-radius: 14px;
-  margin: 8px 0;
-  width: fit-content;
-  max-width: 80%;
-}
+          // Enable Lightbox
+          img.style.cursor = 'zoom-in';
+          img.onclick = function () { openLightbox(this.src); };
 
-.bot {
-  background: white;
-  color: #333;
-  padding: 10px 14px;
-  border-radius: 14px;
-  margin: 8px 0;
-  width: fit-content;
-  max-width: 80%;
-}
+          if (placeholder) placeholder.style.display = 'none';
+          if (overlayId) {
+            const overlay = document.getElementById(overlayId);
+            if (overlay) overlay.style.display = 'none'; // hide overlay on new upload
+          }
+        }
+        reader.readAsDataURL(file);
+      }
+    }
 
-/* Input Area */
-#inputArea {
-  display: flex;
-  padding: 12px;
-  background: #ffe4ee;
-}
+    async function analyzeImages() {
+      const ccInput = document.getElementById('ccInput');
+      const mloInput = document.getElementById('mloInput');
+      const loading = document.getElementById('loading');
+      const resultDiv = document.getElementById('result');
+      const probScore = document.getElementById('probScore');
+      const riskLevel = document.getElementById('riskLevel');
+      const ccOverlay = document.getElementById('ccOverlay');
+      const ccPreview = document.getElementById('ccPreview');
 
-#userInput {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  font-size: 16px;
-}
+      if (!ccInput.files[0] || !mloInput.files[0]) {
+        alert("Please upload both CC and MLO view images.");
+        return;
+      }
 
-#sendBtn {
-  margin-left: 10px;
-  background: #ff4f8b;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-</style>
-</head>
+      // Show loading
+      loading.style.display = 'block';
+      resultDiv.style.display = 'none';
+      ccOverlay.style.display = 'none';
+      if (document.getElementById('mloOverlay')) document.getElementById('mloOverlay').style.display = 'none';
 
-<body>
+      const formData = new FormData();
+      formData.append('cc', ccInput.files[0]);
+      formData.append('mlo', mloInput.files[0]);
 
-<!-- Chat Button -->
-<button id="chatBtn" onclick="toggleChat()">💬</button>
+      try {
+        // Use absolute URL for local development to support Live Server (port 5500) -> Backend (port 5000)
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'http://127.0.0.1:5000/predict'
+          : '/predict'; // Relative path for production
 
-<!-- Chatbot -->
-<div id="chatbot">
-<div id="sparkles"></div>
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          body: formData
+        });
 
-  <div id="chatHeader">Breast Cancer Chatbot 💗</div>
-  <div id="chatlog"></div>
+        const data = await response.json();
+        loading.style.display = 'none';
 
-  <div id="inputArea">
-    <input id="userInput" placeholder="Ask about breast cancer..." />
-    <button id="sendBtn" onclick="send()">Send</button>
-  </div>
-</div>
+        if (response.ok) {
+          const probability = (data.probability * 100).toFixed(2);
+          probScore.innerText = probability;
 
-<script>
-function toggleChat() {
-  let chat = document.getElementById("chatbot");
-  chat.style.display = chat.style.display === "none" ? "block" : "none";
-}
+          let riskText = "";
+          let color = "";
+          let bg = "";
 
-async function send() {
-  let input = document.getElementById("userInput");
-  let msg = input.value;
-  if (!msg) return;
+          if (probability < 20) {
+            riskText = "Low Risk";
+            color = "#2e7d32"; // Dark Green
+            bg = "#e8f5e9";
+          } else if (probability < 60) {
+            riskText = "Moderate Risk (Consultation Recommended)";
+            color = "#ef6c00"; // Orange
+            bg = "#fff3e0";
+          } else {
+            riskText = "High Risk (Immediate Attention Required)";
+            color = "#c62828"; // Red
+            bg = "#ffebee";
+          }
 
-  let chatlog = document.getElementById("chatlog");
+          riskLevel.innerText = riskText;
+          riskLevel.style.color = color;
+          riskLevel.style.backgroundColor = bg;
 
-  let userMsg = document.createElement("div");
-  userMsg.className = "user";
-  userMsg.innerText = msg;
-  chatlog.appendChild(userMsg);
+          resultDiv.style.display = 'block';
+          // Scroll to result with a slight delay to ensure layout update
+          setTimeout(() => {
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 100);
 
-  let res = await fetch("http://localhost:8080/chat");
-  let data = await res.json();
+          // Helper function to draw box
+          function drawBox(bbox, previewElement, overlayElement, isHighRisk) {
+            // Only draw if we have a bbox AND it's not a "safe" result
+            if (bbox && previewElement.clientWidth > 0 && isHighRisk) {
+              let [cx, cy, bw, bh] = bbox;
+              const w = previewElement.clientWidth;
+              const h = previewElement.clientHeight;
 
-  let botMsg = document.createElement("div");
-  botMsg.className = "bot";
-  botMsg.innerText = data.reply;
-  chatlog.appendChild(botMsg);
+              // 1. Enlarge box by 20% for better context
+              bw *= 1.2;
+              bh *= 1.2;
 
-  chatlog.scrollTop = chatlog.scrollHeight;
-  input.value = "";
-}
-function createSparkle() {
-  const sparkle = document.createElement("div");
-  sparkle.className = "sparkle";
+              // Calculate normalized top-left and bottom-right
+              let x1 = cx - bw / 2;
+              let y1 = cy - bh / 2;
+              let x2 = cx + bw / 2;
+              let y2 = cy + bh / 2;
 
-  const chatbot = document.getElementById("chatbot");
-  const sparkles = document.getElementById("sparkles");
+              // 2. Clamp to [0, 1] with slight padding (0.5%) to avoid touching edges
+              const GAP = 0.005;
+              x1 = Math.max(GAP, x1);
+              y1 = Math.max(GAP, y1);
+              x2 = Math.min(1 - GAP, x2);
+              y2 = Math.min(1 - GAP, y2);
 
-  sparkle.style.left = Math.random() * chatbot.offsetWidth + "px";
-  sparkle.style.top  = Math.random() * chatbot.offsetHeight + "px";
+              // Calculate pixel dimensions from clamped values
+              const boxWidth = (x2 - x1) * w;
+              const boxHeight = (y2 - y1) * h;
 
-  sparkles.appendChild(sparkle);
+              // Position relative to CONTAINER (Image Offset + Box Start)
+              const left = previewElement.offsetLeft + (x1 * w);
+              const top = previewElement.offsetTop + (y1 * h);
 
-  setTimeout(() => sparkle.remove(), 2000);
-}
+              overlayElement.style.left = `${left}px`;
+              overlayElement.style.top = `${top}px`;
+              overlayElement.style.width = `${boxWidth}px`;
+              overlayElement.style.height = `${boxHeight}px`;
 
-setInterval(() => {
-  const chatbot = document.getElementById("chatbot");
-  if (chatbot.style.display === "block") {
-    createSparkle();
-  }
-}, 300);
+              overlayElement.style.border = '4px solid #ff4f8b';
+              overlayElement.style.boxShadow = '0 0 15px rgba(255, 79, 139, 0.8)';
+              overlayElement.style.display = 'block';
+            } else {
+              overlayElement.style.display = 'none';
+            }
+          }
 
-</script>
+          const isHighRisk = probability >= 20;
+
+          // Draw Bounding Box on CC View
+          drawBox(data.bbox, ccPreview, ccOverlay, isHighRisk);
+
+          // Draw Bounding Box on MLO View
+          if (data.bbox) {
+            const mloPreview = document.getElementById('mloPreview');
+            const mloOverlay = document.getElementById('mloOverlay');
+            drawBox(data.bbox, mloPreview, mloOverlay, isHighRisk);
+
+            // Update Lightbox OnClick to include BBox ONLY if High Risk
+            const bboxForLightbox = isHighRisk ? data.bbox : null;
+            ccPreview.onclick = function () { openLightbox(this.src, bboxForLightbox); };
+            mloPreview.onclick = function () { openLightbox(this.src, bboxForLightbox); };
+          }
+        } else {
+          alert("Error: " + (data.error || "Unknown error occurred"));
+        }
+      } catch (error) {
+        loading.style.display = 'none';
+        console.error("Backend connection failed:", error);
+
+        // Fallback to Demo Video
+        resultDiv.style.display = 'block';
+
+        // Hide standard results
+        document.getElementById('probScore').parentElement.style.display = 'none';
+        document.getElementById('riskLevel').style.display = 'none';
+
+        // Show Demo Video
+        const demoContainer = document.getElementById('demoVideoContainer');
+        demoContainer.style.display = 'block';
+
+        // Scroll to result
+        setTimeout(() => {
+          resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+
+    // Lightbox Logic
+    function openLightbox(imgSrc, bbox) {
+      if (imgSrc) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const overlay = document.getElementById('lightboxOverlay');
+
+        lightboxImg.src = imgSrc;
+        lightbox.style.display = 'flex';
+
+        // Reset overlay
+        overlay.style.display = 'none';
+
+        if (bbox) {
+          // Wait for image to load to get dimensions
+          lightboxImg.onload = function () {
+            const w = lightboxImg.clientWidth;
+            const h = lightboxImg.clientHeight;
+
+            // bbox is [cx, cy, w, h] normalized
+            let [cx, cy, bw, bh] = bbox;
+
+            // 1. Enlarge box by 20%
+            bw *= 1.2;
+            bh *= 1.2;
+
+            // Calculate normalized top-left and bottom-right
+            let x1 = cx - bw / 2;
+            let y1 = cy - bh / 2;
+            let x2 = cx + bw / 2;
+            let y2 = cy + bh / 2;
+
+            // 2. Clamp with padding
+            const GAP = 0.005;
+            x1 = Math.max(GAP, x1);
+            y1 = Math.max(GAP, y1);
+            x2 = Math.min(1 - GAP, x2);
+            y2 = Math.min(1 - GAP, y2);
+
+            const boxWidth = (x2 - x1) * w;
+            const boxHeight = (y2 - y1) * h;
+
+            const left = (x1 * w);
+            const top = (y1 * h);
+
+            overlay.style.left = `${left}px`;
+            overlay.style.top = `${top}px`;
+            overlay.style.width = `${boxWidth}px`;
+            overlay.style.height = `${boxHeight}px`;
+            overlay.style.display = 'block';
+          }
+        } else {
+          lightboxImg.onload = null;
+        }
+      }
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').style.display = 'none';
+      document.getElementById('lightboxOverlay').style.display = 'none';
+    }
+  </script>
 
 </body>
+
 </html>
-
-
-<nav>
-  <a href="#features">Our Features</a>
-  <a href="#info">Know More</a>
-  <a href="#predict">Predict</a>
-  <a href="#stories">Survivor Stories</a>
-</nav>
-
-<section class="hero">
-  <h2>Your Health. Our Intelligence.</h2>
-  <button onclick="toggleInfo()">Know More About Breast Cancer</button>
-</section>
-
-<section id="info" class="card hidden small-info">
-
-<h2>Know More About Breast Cancer</h2>
-
-<h3>Overview</h3>
-<p>
-Breast cancer is a disease in which abnormal cells in the breast grow uncontrollably and form a malignant tumor.
-These cells can invade nearby tissues and spread through the lymphatic system and bloodstream to distant organs.
-Although it mainly affects women, men can also develop breast cancer.
-Early detection greatly increases survival and treatment success.
-</p>
-
-<h3>Breast Anatomy</h3>
-<p>
-The breast consists of lobules that produce milk, ducts that carry milk to the nipple, fatty tissue that gives shape,
-connective tissue that provides support, and lymph nodes that fight infection.
-Most cancers start in the ducts or lobules and may spread to lymph nodes and vital organs.
-</p>
-
-<h3>Types of Breast Cancer</h3>
-<p>
-<b>DCIS</b> is a non-invasive form confined to milk ducts.  
-<b>IDC</b> spreads beyond ducts into nearby tissue.  
-<b>ILC</b> begins in lobules and spreads silently.  
-<b>TNBC</b> lacks hormone receptors and is aggressive.  
-<b>HER2-positive</b> cancer grows fast but responds to targeted therapy.  
-<b>Inflammatory breast cancer</b> is rare, fast-growing, and causes swelling and redness.
-</p>
-
-<h3>Causes and Risk Factors</h3>
-<p>
-Breast cancer develops due to genetic, hormonal, and lifestyle factors.
-BRCA1 and BRCA2 gene mutations increase risk.
-Early menstruation, late menopause, hormone therapy, smoking, alcohol, obesity,
-poor diet, and lack of exercise also contribute.
-</p>
-
-<h3>Signs and Symptoms</h3>
-<p>
-A lump in the breast or underarm, changes in breast size or shape,
-skin dimpling, nipple discharge, breast pain, redness, or swelling.
-Early stages may have no symptoms, making screening essential.
-</p>
-
-<h3>Stages of Breast Cancer</h3>
-<p>
-Stage 0 is non-invasive.  
-Stage I is localized.  
-Stage II involves nearby lymph nodes.  
-Stage III spreads to surrounding tissues or multiple nodes.  
-Stage IV spreads to distant organs like lungs, liver, or bones.
-</p>
-
-<h3>Diagnosis</h3>
-<p>
-Diagnosis includes self-exams, clinical exams, mammograms, ultrasound,
-biopsy, and MRI to determine cancer type and stage.
-</p>
-
-<h3>Treatment Options</h3>
-<p>
-Treatment may include surgery, radiation therapy, chemotherapy,
-hormone therapy, targeted therapy, and immunotherapy depending on the case.
-</p>
-
-<h3>Prevention and Early Detection</h3>
-<p>
-Healthy lifestyle choices, avoiding tobacco and alcohol, maintaining weight,
-regular exercise, breastfeeding, and routine screening reduce risk.
-</p>
-
-<h3>Emotional and Social Impact</h3>
-<p>
-Breast cancer affects mental and emotional health.
-Support from family, friends, counselors, and survivor groups is essential.
-</p>
-
-<h3>Awareness and Hope</h3>
-<p>
-The pink ribbon represents hope.
-With early detection and modern treatments, many people live long, fulfilling lives.
-</p>
-
-</section>
-
-<section id="features" class="card">
-<h2>Our Features</h2>
-<div class="grid">
-<div class="box"><h3>Detection</h3><p>AI cancer detection</p></div>
-<div class="box"><h3>Classification</h3><p>Cancer type detection</p></div>
-<div class="box"><h3>Recurrence</h3><p>Recurrence prediction</p></div>
-</div>
-</section>
-
-<section id="predict" class="card">
-<h2>Upload Report</h2>
-<input type="file">
-<br><br>
-<button>Generate Result</button>
-</section>
-
-<section id="stories" class="card">
-<h2>Survivor Stories</h2>
-<p class="story-intro">Hope, courage and strength</p>
-<div class="story-grid">
-<div class="story-box"><h3>Anita</h3><p>Early detection saved my life.</p></div>
-<div class="story-box"><h3>Meera</h3><p>Hope kept me going.</p></div>
-<div class="story-box"><h3>Radhika</h3><p>Never give up.</p></div>
-</div>
-</section>
-
-<footer>
-<p>Developed by Savni Goyal | B.Tech CSE</p>
-</footer>
-
-<script>
-function toggleInfo(){
-document.getElementById("info").classList.toggle("hidden");
-}
-</script>
-
-</body>
-</html>
-
-
