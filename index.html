@@ -376,6 +376,18 @@
         </p>
       </div>
 
+      <div id="analysisSection" style="display: none; margin-top: 24px; padding: 18px; border-radius: 14px; background: linear-gradient(135deg, #fff7fb, #f8fbff); border: 1px solid rgba(255, 79, 139, 0.15);">
+        <h4 style="margin: 0 0 12px 0; color: var(--primary-dark);">Why this percentage was shown</h4>
+        <p id="analysisBasis" style="margin: 0; color: #4a4a4a; line-height: 1.6;"></p>
+        <p id="scoreReason" style="margin: 12px 0 0 0; color: #4a4a4a; line-height: 1.6;"></p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;">
+          <div class="analysis-pill">Selected crop: <strong id="selectedCrop">--</strong></div>
+          <div class="analysis-pill">Focus area: <strong id="bboxSummary">--</strong></div>
+        </div>
+        <div id="cropBreakdown" style="margin-top: 16px;"></div>
+        <div id="shapBreakdown" style="margin-top: 16px;"></div>
+      </div>
+
       <!-- Demo Video Container -->
       <div id="demoVideoContainer" style="display: none; text-align: center; margin-top: 20px;">
         <p style="color: #ef6c00; font-weight: bold; margin-bottom: 10px;">Backend Unavailable - Showing Demo Analysis
@@ -431,6 +443,29 @@
       document.getElementById("info").classList.toggle("hidden");
     }
 
+    function initMicroAnimations() {
+      const animatedNodes = document.querySelectorAll('.card, .upload-box, .story-box, .hero');
+      animatedNodes.forEach(node => node.classList.add('anim-in'));
+
+      if (!('IntersectionObserver' in window)) {
+        animatedNodes.forEach(node => node.classList.add('in-view'));
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      animatedNodes.forEach(node => observer.observe(node));
+    }
+
+    document.addEventListener('DOMContentLoaded', initMicroAnimations);
+
     // Image Preview Logic
     function previewImage(input, imgId, overlayId) {
       const file = input.files[0];
@@ -465,8 +500,55 @@
       const resultDiv = document.getElementById('result');
       const probScore = document.getElementById('probScore');
       const riskLevel = document.getElementById('riskLevel');
+      const analysisSection = document.getElementById('analysisSection');
+      const analysisBasis = document.getElementById('analysisBasis');
+      const scoreReason = document.getElementById('scoreReason');
+      const selectedCrop = document.getElementById('selectedCrop');
+      const bboxSummary = document.getElementById('bboxSummary');
+      const cropBreakdown = document.getElementById('cropBreakdown');
+      const shapBreakdown = document.getElementById('shapBreakdown');
       const ccOverlay = document.getElementById('ccOverlay');
       const ccPreview = document.getElementById('ccPreview');
+
+      function formatBBoxSummary(bbox) {
+        if (!bbox || bbox.length !== 4) return 'Not available';
+
+        const [cx, cy, bw, bh] = bbox;
+        return `center ${ (cx * 100).toFixed(1) }%, ${ (cy * 100).toFixed(1) }%, box ${ (bw * 100).toFixed(1) }% × ${ (bh * 100).toFixed(1) }%`;
+      }
+
+      function toFriendlyCrop(label) {
+        const map = {
+          'Top-Left': 'top-left area',
+          'Top-Right': 'top-right area',
+          'Bottom-Left': 'bottom-left area',
+          'Bottom-Right': 'bottom-right area',
+          'Center': 'center area'
+        };
+        return map[label] || 'selected area';
+      }
+
+      function buildScoreReason(cropScores, selectedLabel) {
+        if (!Array.isArray(cropScores) || cropScores.length === 0) {
+          return 'This percentage is the AI confidence score for the area that looked most suspicious.';
+        }
+
+        const sortedScores = [...cropScores].sort((left, right) => right.probability - left.probability);
+        const best = sortedScores[0];
+        const secondBest = sortedScores[1];
+        const bestPercent = (best.probability * 100).toFixed(2);
+        const bestArea = toFriendlyCrop(selectedLabel || best.crop);
+
+        if (!secondBest) {
+          return `The AI gave ${bestPercent}% because the ${bestArea} had the strongest warning pattern.`;
+        }
+
+        const secondPercent = (secondBest.probability * 100).toFixed(2);
+        const gap = ((best.probability - secondBest.probability) * 100).toFixed(2);
+        const nextArea = toFriendlyCrop(secondBest.crop);
+
+        return `The AI checked 5 areas and picked the ${bestArea} because it had the highest score (${bestPercent}%). The next highest was the ${nextArea} (${secondPercent}%), so the selected area was ahead by ${gap}%.`;
+      }
 
       if (!ccInput.files[0] || !mloInput.files[0]) {
         alert("Please upload both CC and MLO view images.");
@@ -476,6 +558,13 @@
       // Show loading
       loading.style.display = 'block';
       resultDiv.style.display = 'none';
+      document.getElementById('probScore').parentElement.style.display = 'block';
+      document.getElementById('riskLevel').style.display = 'inline-block';
+      analysisSection.style.display = 'none';
+      scoreReason.innerText = '';
+      cropBreakdown.innerHTML = '';
+      shapBreakdown.innerHTML = '';
+      document.getElementById('demoVideoContainer').style.display = 'none';
       ccOverlay.style.display = 'none';
       if (document.getElementById('mloOverlay')) document.getElementById('mloOverlay').style.display = 'none';
 
@@ -500,6 +589,66 @@
         if (response.ok) {
           const probability = (data.probability * 100).toFixed(2);
           probScore.innerText = probability;
+          analysisSection.style.display = 'block';
+          const selectedArea = toFriendlyCrop(data.selected_crop_label);
+          const selectedView = data.selected_view || 'selected';
+          analysisBasis.innerText = `The AI checked both scans and found the strongest warning signs in the ${selectedView} image, mainly in the ${selectedArea}.`;
+          selectedCrop.innerText = `${selectedView} - ${selectedArea}`;
+          bboxSummary.innerText = formatBBoxSummary(data.bbox);
+          scoreReason.innerText = buildScoreReason(data.crop_scores, data.selected_crop_label);
+
+          if (Array.isArray(data.evidence) && data.evidence.length) {
+            scoreReason.innerText += ` Key data: ${data.evidence.join(' | ')}`;
+          }
+
+          if (data.shap_summary && Array.isArray(data.shap_summary.top_features)) {
+            const topFeatures = data.shap_summary.top_features.slice(0, 10);
+            const maxImpact = Math.max(...topFeatures.map(item => Math.abs(Number(item.contribution) || 0)), 1e-6);
+
+            shapBreakdown.innerHTML = `
+              <h5 style="margin: 0 0 10px 0; color: var(--primary-dark);">Top 10 parameters (filled bars)</h5>
+              <div style="display: grid; gap: 10px;">
+                ${topFeatures.map(item => {
+                  const impact = Math.abs(Number(item.contribution) || 0);
+                  const width = Math.max(6, (impact / maxImpact) * 100);
+                  const val = Number(item.value).toFixed(3);
+                  const positive = item.direction === 'increase_risk';
+                  return `
+                    <div class="shap-row">
+                      <div class="shap-row-header">
+                        <span class="shap-feature">${item.feature}</span>
+                        <span class="shap-value">${val}</span>
+                      </div>
+                      <div class="shap-track">
+                        <div class="shap-fill ${positive ? 'shap-fill-risk' : 'shap-fill-protect'}" style="width:${width}%;"></div>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            `;
+          } else {
+            shapBreakdown.innerHTML = '';
+          }
+
+          const cropScores = Array.isArray(data.crop_scores) ? data.crop_scores : [];
+          if (cropScores.length) {
+            cropBreakdown.innerHTML = `
+              <h5 style="margin: 0 0 10px 0; color: var(--primary-dark);">How each area scored</h5>
+              <div style="display: grid; gap: 8px;">
+                ${cropScores.map(item => {
+                  const score = (item.probability * 100).toFixed(2);
+                  const active = item.crop === (data.selected_crop_label || '');
+                  return `<div style="display:flex; justify-content:space-between; gap:12px; padding:10px 12px; border-radius:10px; background:${active ? 'rgba(255, 79, 139, 0.10)' : '#ffffff'}; border:1px solid ${active ? 'rgba(255, 79, 139, 0.20)' : 'rgba(0,0,0,0.06)'};">
+                    <span style="font-weight:${active ? '700' : '500'}; color:#4a4a4a;">${toFriendlyCrop(item.crop)}</span>
+                    <span style="font-weight:700; color:var(--primary-dark);">${score}%</span>
+                  </div>`;
+                }).join('')}
+              </div>
+            `;
+          } else {
+            cropBreakdown.innerHTML = '';
+          }
 
           let riskText = "";
           let color = "";
@@ -604,6 +753,10 @@
         // Hide standard results
         document.getElementById('probScore').parentElement.style.display = 'none';
         document.getElementById('riskLevel').style.display = 'none';
+        analysisSection.style.display = 'none';
+        scoreReason.innerText = '';
+        cropBreakdown.innerHTML = '';
+        shapBreakdown.innerHTML = '';
 
         // Show Demo Video
         const demoContainer = document.getElementById('demoVideoContainer');

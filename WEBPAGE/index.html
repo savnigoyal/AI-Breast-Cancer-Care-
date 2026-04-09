@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Breast Cancer Care</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <div class="logo-box">
+                <span class="logo-icon">🎗️</span>
+            </div>
+            <div class="logo-text">
+                <h1>PBL 2026</h1>
+                <p>DEPT. OF COMPUTER SCIENCE & ENGINEERING</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#problem">PROBLEM</a></li>
+                <li><a href="#methodology">METHODOLOGY</a></li>
+                <li><a href="#results">RESULTS</a></li>
+                <li><a href="#team">TEAM</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-section">
+            <div class="id-tag">ID: [ AI-BCC-2026 ]</div>
+            <h1 class="project-title">AI BREAST CANCER CARE</h1>
+            <p class="hypothesis">
+                "Leveraging Deep Learning for Early and Accurate Detection of Breast Cancer from Mammograms."
+            </p>
+        </section>
+
+        <section id="problem" class="content-section">
+            <div class="card problem-card hidden">
+                <h2>Problem Statement</h2>
+                <p>
+                    Breast cancer is a leading cause of mortality among women worldwide. Early detection is crucial for
+                    survival, but manual interpretation of mammograms is time-consuming and prone to human error. There
+                    is a critical need for automated systems to assist radiologists in identifying potential
+                    abnormalities with high accuracy and speed.
+                </p>
+            </div>
+            <div class="side-cards">
+                <div class="card small-card hidden">
+                    <h3>LITERATURE REVIEW</h3>
+                    <p>Analysis of existing CAD systems reveals limitations in false positive reduction and localization
+                        accuracy.</p>
+                </div>
+                <div class="card small-card hidden">
+                    <h3>INNOVATION</h3>
+                    <p>Integrates dual-view analysis (CC & MLO) with ResNet architecture for enhanced risk
+                        stratification.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="methodology" class="methodology-section">
+            <h2 class="section-title">SYSTEM METHODOLOGY</h2>
+            <div class="methodology-grid">
+                <div class="card method-card hidden">
+                    <div class="icon">💾</div>
+                    <h3>DATASET / INPUT</h3>
+                    <p>CBIS-DDSM Dataset (Mammograms)</p>
+                    <p>Preprocessing: Clahe, Resize, Norm</p>
+                </div>
+                <div class="card method-card hidden">
+                    <div class="icon">🧠</div>
+                    <h3>MODEL / ARCHITECTURE</h3>
+                    <p>ResNet50 / CNN</p>
+                    <p>Deep Learning Classification & Localization</p>
+                </div>
+                <div class="card method-card active-card hidden">
+                    <div class="icon">🐍</div>
+                    <h3>LIVE EXECUTION</h3>
+                    <button class="demo-btn">VIEW DEMO</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="results" class="results-section">
+            <div class="results-container hidden">
+                <h2 class="section-title">RESULTS & ANALYSIS</h2>
+                <div class="content-wrapper">
+                    <div class="chart-area">
+                        <div class="y-axis">
+                            <span>100</span><span>90</span><span>80</span><span>70</span><span>60</span>
+                            <span>50</span><span>40</span><span>30</span><span>20</span><span>10</span><span>0</span>
+                        </div>
+                        <div class="bars-container">
+                            <div class="bar-wrapper">
+                                <div class="bar existing"></div>
+                                <span class="bar-label">Existing System</span>
+                            </div>
+                            <div class="bar-wrapper">
+                                <div class="bar proposed"></div>
+                                <span class="bar-label">Our Solution</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metrics-panel">
+                        <div class="metric-card">
+                            <h3>ACCURACY / PERFORMANCE</h3>
+                            <div class="score">92.5%</div>
+                        </div>
+                        <p class="metric-description">Quantifiable outcomes and evaluation metrics compared to
+                            baselines.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="team-section">
+            <h2 class="section-title">ACADEMIC CREDITS</h2>
+            <div class="team-grid">
+                <div class="card team-card hidden">
+                    <h3>PROJECT GUIDE</h3>
+                    <div class="name"> Ms. Babita Tiwari</div>
+                    <p>Department of CSE</p>
+                </div>
+                <div class="card team-card hidden">
+                    <h3>TEAM MEMBER</h3>
+                    <div class="name">Savni Goyal</div>
+                    <p>[Reg No Placeholder]</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>MANIPAL UNIVERSITY JAIPUR</p>
+        <p>DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING • 2026</p>
+    </footer>
+
+    <div class="timer-widget">
+        <span class="hourglass">⏳</span>
+        <span id="timer">00:00</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
